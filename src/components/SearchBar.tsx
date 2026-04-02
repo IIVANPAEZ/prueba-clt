@@ -7,7 +7,10 @@ interface Props {
   placeholder?: string;
 }
 
-const SearchBar: React.FC<Props> = ({onSearch, placeholder = 'Buscar productos...'}) => {
+const SearchBar: React.FC<Props> = ({
+  onSearch,
+  placeholder = 'Buscar productos...',
+}) => {
   const [text, setText] = useState('');
   const isFirstRender = useRef(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
