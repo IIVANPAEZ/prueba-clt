@@ -9,8 +9,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../hooks/useAppDispatch';
-import {getProducts, resetProducts} from '../store/slices/productsSlice';
+import {getProducts, setSearchQuery, resetProducts} from '../store/slices/productsSlice';
 import ProductCard from '../components/ProductCard';
+import SearchBar from '../components/SearchBar';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../navigation/types';
 
@@ -27,6 +28,14 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
+  const handleSearch = useCallback(
+    (query: string) => {
+      dispatch(setSearchQuery(query));
+      dispatch(getProducts());
+    },
+    [dispatch],
+  );
 
   const handleLoadMore = useCallback(() => {
     if (status !== 'loading' && hasMore) {
@@ -72,6 +81,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <SearchBar onSearch={handleSearch} />
       <FlatList
         data={items}
         keyExtractor={item => item.id.toString()}
