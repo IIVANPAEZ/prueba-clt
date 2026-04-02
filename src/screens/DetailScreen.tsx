@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Image, StyleSheet, ScrollView} from 'react-native';
+import {Text, Button, Chip} from 'react-native-paper';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../navigation/types';
 import {useAppDispatch, useAppSelector} from '../hooks/useAppDispatch';
@@ -33,22 +27,56 @@ const DetailScreen: React.FC<Props> = ({route}) => {
         resizeMode="cover"
       />
       <View style={styles.content}>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-        <Text style={styles.description}>{product.description}</Text>
-
-        <TouchableOpacity
-          style={[styles.favoriteButton, isFavorite && styles.favoriteButtonActive]}
-          onPress={handleToggleFavorite}
-          activeOpacity={0.7}>
-          <Text
-            style={[
-              styles.favoriteText,
-              isFavorite && styles.favoriteTextActive,
-            ]}>
-            {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+        <View style={styles.header}>
+          <Text variant="headlineSmall" style={styles.title}>
+            {product.title}
           </Text>
-        </TouchableOpacity>
+          <Text variant="headlineMedium" style={styles.price}>
+            ${product.price.toFixed(2)}
+          </Text>
+        </View>
+
+        <View style={styles.chips}>
+          {product.category && (
+            <Chip
+              style={styles.chip}
+              textStyle={styles.chipText}
+              icon="tag">
+              {product.category}
+            </Chip>
+          )}
+          {product.brand && (
+            <Chip
+              style={styles.chip}
+              textStyle={styles.chipText}
+              icon="store">
+              {product.brand}
+            </Chip>
+          )}
+          {product.rating && (
+            <Chip
+              style={styles.chipRating}
+              textStyle={styles.chipRatingText}
+              icon="star">
+              {product.rating.toFixed(1)}
+            </Chip>
+          )}
+        </View>
+
+        <Text variant="bodyLarge" style={styles.description}>
+          {product.description}
+        </Text>
+
+        <Button
+          mode={isFavorite ? 'contained' : 'outlined'}
+          onPress={handleToggleFavorite}
+          icon={isFavorite ? 'heart' : 'heart-outline'}
+          buttonColor={isFavorite ? '#1565C0' : undefined}
+          textColor={isFavorite ? '#fff' : '#1565C0'}
+          style={styles.favoriteButton}
+          contentStyle={styles.favoriteContent}>
+          {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+        </Button>
       </View>
     </ScrollView>
   );
@@ -57,52 +85,61 @@ const DetailScreen: React.FC<Props> = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   image: {
     width: '100%',
-    height: 300,
-    backgroundColor: '#f0f0f0',
+    height: 320,
+    backgroundColor: '#E3F2FD',
   },
   content: {
     padding: 20,
   },
+  header: {
+    marginBottom: 12,
+  },
   title: {
-    fontSize: 24,
+    color: '#1A1A2E',
     fontWeight: '700',
-    color: '#333',
   },
   price: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#2a9d8f',
-    marginTop: 8,
+    color: '#1565C0',
+    fontWeight: '800',
+    marginTop: 6,
+  },
+  chips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
+  },
+  chip: {
+    backgroundColor: '#E3F2FD',
+  },
+  chipText: {
+    color: '#1565C0',
+    fontSize: 13,
+  },
+  chipRating: {
+    backgroundColor: '#FFF8E1',
+  },
+  chipRatingText: {
+    color: '#F9A825',
+    fontSize: 13,
   },
   description: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 24,
-    marginTop: 16,
+    color: '#546E7A',
+    lineHeight: 26,
+    marginBottom: 8,
   },
   favoriteButton: {
-    marginTop: 24,
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 12,
+    borderColor: '#1565C0',
     borderWidth: 2,
-    borderColor: '#2a9d8f',
   },
-  favoriteButtonActive: {
-    backgroundColor: '#2a9d8f',
-  },
-  favoriteText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2a9d8f',
-  },
-  favoriteTextActive: {
-    color: '#fff',
+  favoriteContent: {
+    paddingVertical: 6,
   },
 });
 

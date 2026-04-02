@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import DetailScreen from '../screens/DetailScreen';
@@ -15,16 +15,34 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#2a9d8f',
-        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: '#1565C0',
+        tabBarInactiveTintColor: '#90A4AE',
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 0,
+          elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: -2},
+          shadowOpacity: 0.08,
+          shadowRadius: 8,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 4,
         },
-        headerStyle: {backgroundColor: '#2a9d8f'},
-        headerTintColor: '#fff',
-        headerTitleStyle: {fontWeight: '700'},
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+        headerStyle: {
+          backgroundColor: '#1565C0',
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: 20,
+        },
       }}>
       <Tab.Screen
         name="Home"
@@ -32,7 +50,7 @@ const HomeTabs = () => {
         options={{
           title: 'Productos',
           tabBarIcon: ({color, size}) => (
-            <Text style={{fontSize: size, color}}>{'🏠'}</Text>
+            <Icon name="shopping" size={size} color={color} />
           ),
         }}
       />
@@ -42,7 +60,7 @@ const HomeTabs = () => {
         options={{
           title: 'Favoritos',
           tabBarIcon: ({color, size}) => (
-            <Text style={{fontSize: size, color}}>{'⭐'}</Text>
+            <Icon name="heart" size={size} color={color} />
           ),
         }}
       />
@@ -55,9 +73,15 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerStyle: {backgroundColor: '#2a9d8f'},
-          headerTintColor: '#fff',
-          headerTitleStyle: {fontWeight: '700'},
+          headerStyle: {
+            backgroundColor: '#1565C0',
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            fontWeight: '700',
+            fontSize: 20,
+          },
+          headerShadowVisible: false,
         }}>
         <Stack.Screen
           name="HomeTabs"

@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Card, Text} from 'react-native-paper';
 import {Product} from '../types/Product';
 
 interface Props {
@@ -9,53 +10,56 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({product, onPress}) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      <Image source={{uri: product.thumbnail}} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.title} numberOfLines={2}>
-          {product.title}
-        </Text>
-        <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+    <Card style={styles.card} onPress={onPress} mode="elevated">
+      <View style={styles.row}>
+        <Card.Cover
+          source={{uri: product.thumbnail}}
+          style={styles.image}
+        />
+        <View style={styles.info}>
+          <Text variant="titleMedium" numberOfLines={2} style={styles.title}>
+            {product.title}
+          </Text>
+          <Text variant="titleLarge" style={styles.price}>
+            ${product.price.toFixed(2)}
+          </Text>
+        </View>
       </View>
-    </TouchableOpacity>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 12,
     marginHorizontal: 16,
     marginVertical: 6,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    elevation: 2,
+  },
+  row: {
+    flexDirection: 'row',
     padding: 12,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   image: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
+    width: 90,
+    height: 90,
+    borderRadius: 12,
+    backgroundColor: '#E3F2FD',
   },
   info: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 14,
     justifyContent: 'center',
   },
   title: {
-    fontSize: 16,
+    color: '#1A1A2E',
     fontWeight: '600',
-    color: '#333',
   },
   price: {
-    fontSize: 18,
+    color: '#1565C0',
     fontWeight: '700',
-    color: '#2a9d8f',
-    marginTop: 4,
+    marginTop: 6,
   },
 });
 

@@ -36,23 +36,27 @@ export const getProducts = createAsyncThunk(
   },
 );
 
+export const searchByQuery = createAsyncThunk(
+  'products/searchByQuery',
+  async (query: string) => {
+    if (query.trim()) {
+      return {data: await searchProducts(query, LIMIT, 0), query};
+    }
+    return {data: await fetchProducts(LIMIT, 0), query};
+  },
+);
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setSearchQuery(state, action) {
-      state.searchQuery = action.payload;
-      state.items = [];
-      state.page = 0;
-      state.hasMore = true;
-      state.status = 'idle';
-    },
     resetProducts(state) {
       state.items = [];
       state.page = 0;
       state.hasMore = true;
       state.status = 'idle';
       state.error = null;
+      state.searchQuery = '';
     },
   },
   extraReducers: builder => {
@@ -71,9 +75,28 @@ const productsSlice = createSlice({
       .addCase(getProducts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Error al cargar productos';
+      })
+      .addCase(searchByQuery.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+        state.items = [];
+        state.page = 0;
+        state.hasMore = true;
+      })
+      .addCase(searchByQuery.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const {data, query} = action.payload;
+        state.searchQuery = query;
+        state.items = data.products;
+        state.hasMore = data.skip + data.products.length < data.total;
+        state.page = 1;
+      })
+      .addCase(searchByQuery.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Error al buscar productos';
       });
   },
 });
 
-export const {setSearchQuery, resetProducts} = productsSlice.actions;
+export const {resetProducts} = productsSlice.actions;
 export default productsSlice.reducer;

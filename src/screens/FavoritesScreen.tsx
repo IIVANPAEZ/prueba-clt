@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, FlatList, Text, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
+import {Text} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAppSelector} from '../hooks/useAppDispatch';
 import ProductCard from '../components/ProductCard';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -26,8 +28,11 @@ const FavoritesScreen: React.FC<Props> = ({navigation}) => {
         )}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyText}>No tienes favoritos aun</Text>
-            <Text style={styles.emptySubtext}>
+            <Icon name="heart-outline" size={64} color="#BBDEFB" />
+            <Text variant="titleMedium" style={styles.emptyText}>
+              No tienes favoritos aun
+            </Text>
+            <Text variant="bodyMedium" style={styles.emptySubtext}>
               Agrega productos desde el detalle
             </Text>
           </View>
@@ -41,7 +46,7 @@ const FavoritesScreen: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#F5F7FA',
   },
   empty: {
     flex: 1,
@@ -50,14 +55,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   emptyText: {
-    fontSize: 18,
+    color: '#546E7A',
     fontWeight: '600',
-    color: '#666',
+    marginTop: 16,
   },
   emptySubtext: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 8,
+    color: '#90A4AE',
+    marginTop: 6,
   },
   emptyContainer: {
     flex: 1,

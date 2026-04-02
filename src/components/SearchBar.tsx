@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Searchbar} from 'react-native-paper';
 
 interface Props {
   onSearch: (query: string) => void;
@@ -31,32 +32,29 @@ const SearchBar: React.FC<Props> = ({onSearch, placeholder = 'Buscar productos..
   }, [text, onSearch]);
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        placeholderTextColor="#999"
-        value={text}
-        onChangeText={setText}
-        autoCorrect={false}
-        autoCapitalize="none"
-      />
-    </View>
+    <Searchbar
+      placeholder={placeholder}
+      value={text}
+      onChangeText={setText}
+      style={styles.searchbar}
+      inputStyle={styles.input}
+      iconColor="#1565C0"
+      placeholderTextColor="#90A4AE"
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+  searchbar: {
+    marginHorizontal: 16,
+    marginVertical: 10,
+    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    elevation: 2,
   },
   input: {
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    fontSize: 16,
-    color: '#333',
+    fontSize: 15,
+    color: '#1A1A2E',
   },
 });
 

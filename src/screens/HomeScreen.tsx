@@ -1,15 +1,8 @@
 import React, {useEffect, useCallback} from 'react';
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import {View, FlatList, StyleSheet, RefreshControl} from 'react-native';
+import {ActivityIndicator, Text, Button} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks/useAppDispatch';
-import {getProducts, setSearchQuery, resetProducts} from '../store/slices/productsSlice';
+import {getProducts, searchByQuery, resetProducts} from '../store/slices/productsSlice';
 import ProductCard from '../components/ProductCard';
 import SearchBar from '../components/SearchBar';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -31,8 +24,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   const handleSearch = useCallback(
     (query: string) => {
-      dispatch(setSearchQuery(query));
-      dispatch(getProducts());
+      dispatch(searchByQuery(query));
     },
     [dispatch],
   );
@@ -52,36 +44,45 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     if (status === 'loading' && items.length > 0) {
       return (
         <View style={styles.footer}>
-          <ActivityIndicator size="small" color="#2a9d8f" />
+          <ActivityIndicator size="small" color="#1565C0" />
         </View>
       );
     }
     return null;
   };
 
-  if (status === 'loading' && items.length === 0) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#2a9d8f" />
-        <Text style={styles.loadingText}>Cargando productos...</Text>
-      </View>
-    );
-  }
+  const renderContent = () => {
+    if (status === 'loading' && items.length === 0) {
+      return (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color="#1565C0" />
+          <Text variant="bodyLarge" style={styles.loadingText}>
+            Cargando productos...
+          </Text>
+        </View>
+      );
+    }
 
-  if (status === 'failed' && items.length === 0) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
-          <Text style={styles.retryText}>Reintentar</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+    if (status === 'failed' && items.length === 0) {
+      return (
+        <View style={styles.center}>
+          <Text variant="bodyLarge" style={styles.errorText}>
+            {error}
+          </Text>
+          <Button
+            mode="contained"
+            onPress={handleRefresh}
+            buttonColor="#1565C0"
+            textColor="#fff"
+            style={styles.retryButton}
+            icon="refresh">
+            Reintentar
+          </Button>
+        </View>
+      );
+    }
 
-  return (
-    <View style={styles.container}>
-      <SearchBar onSearch={handleSearch} />
+    return (
       <FlatList
         data={items}
         keyExtractor={item => item.id.toString()}
@@ -98,17 +99,28 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           <RefreshControl
             refreshing={false}
             onRefresh={handleRefresh}
-            colors={['#2a9d8f']}
-            tintColor="#2a9d8f"
+            colors={['#1565C0']}
+            tintColor="#1565C0"
           />
         }
         ListEmptyComponent={
-          <View style={styles.center}>
-            <Text style={styles.emptyText}>No se encontraron productos</Text>
-          </View>
+          status === 'succeeded' ? (
+            <View style={styles.center}>
+              <Text variant="bodyLarge" style={styles.emptyText}>
+                No se encontraron productos
+              </Text>
+            </View>
+          ) : null
         }
         contentContainerStyle={items.length === 0 && styles.emptyContainer}
       />
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <SearchBar onSearch={handleSearch} />
+      {renderContent()}
     </View>
   );
 };
@@ -116,7 +128,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#F5F7FA',
   },
   center: {
     flex: 1,
@@ -125,33 +137,22 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#666',
+    marginTop: 16,
+    color: '#546E7A',
   },
   errorText: {
-    fontSize: 16,
-    color: '#e63946',
+    color: '#D32F2F',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   retryButton: {
-    backgroundColor: '#2a9d8f',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    borderRadius: 10,
   },
   footer: {
-    paddingVertical: 20,
+    paddingVertical: 24,
   },
   emptyText: {
-    fontSize: 16,
-    color: '#999',
+    color: '#90A4AE',
   },
   emptyContainer: {
     flex: 1,
