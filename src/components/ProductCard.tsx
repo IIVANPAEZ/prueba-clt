@@ -12,10 +12,7 @@ const ProductCard: React.FC<Props> = ({product, onPress}) => {
   return (
     <Card style={styles.card} onPress={onPress} mode="elevated">
       <View style={styles.row}>
-        <Card.Cover
-          source={{uri: product.thumbnail}}
-          style={styles.image}
-        />
+        <Card.Cover source={{uri: product.thumbnail}} style={styles.image} />
         <View style={styles.info}>
           <Text variant="titleMedium" numberOfLines={2} style={styles.title}>
             {product.title}

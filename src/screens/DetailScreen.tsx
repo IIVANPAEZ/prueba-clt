@@ -38,18 +38,12 @@ const DetailScreen: React.FC<Props> = ({route}) => {
 
         <View style={styles.chips}>
           {product.category && (
-            <Chip
-              style={styles.chip}
-              textStyle={styles.chipText}
-              icon="tag">
+            <Chip style={styles.chip} textStyle={styles.chipText} icon="tag">
               {product.category}
             </Chip>
           )}
           {product.brand && (
-            <Chip
-              style={styles.chip}
-              textStyle={styles.chipText}
-              icon="store">
+            <Chip style={styles.chip} textStyle={styles.chipText} icon="store">
               {product.brand}
             </Chip>
           )}

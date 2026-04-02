@@ -26,7 +26,11 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
         <AppNavigator />
       </PaperProvider>
     </Provider>

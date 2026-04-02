@@ -2,7 +2,11 @@ import React, {useEffect, useCallback} from 'react';
 import {View, FlatList, StyleSheet, RefreshControl} from 'react-native';
 import {ActivityIndicator, Text, Button} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks/useAppDispatch';
-import {getProducts, searchByQuery, resetProducts} from '../store/slices/productsSlice';
+import {
+  getProducts,
+  searchByQuery,
+  resetProducts,
+} from '../store/slices/productsSlice';
 import ProductCard from '../components/ProductCard';
 import SearchBar from '../components/SearchBar';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
